@@ -15,14 +15,15 @@ decoder = Decoder()
 
 if option == 1:
     secret_message = encoder.caesar(message, key)
-    print(secret_message)
-    secret_message = decoder.caesar(secret_message, key)
-    print(secret_message)
+    print(f"{secret_message}")
+    original_message = decoder.caesar(secret_message, key)
+    print(original_message)
 
 elif option == 2:
     secret_message = encoder.vigenere(message, key)
-    print(secret_message)
-    secret_message = decoder.vigenere(secret_message, key)
-    print(secret_message)
+    print(f"{secret_message}")
+    original_message = decoder.vigenere(secret_message, key)
+    print(original_message)
+
 elif option == 3:
     print("Symmetric cipher")
