@@ -2,7 +2,6 @@ import threading
 import queue
 
 class Decoder:
-
     def caesar(self, secret_message, key):
         que = queue.Queue()
         if len(secret_message) < 10: #1 thread
