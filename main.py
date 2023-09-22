@@ -2,6 +2,7 @@ from gui import TkView
 import console
 import threading
 
+
 def main():
     gui_interface = TkView()
     console_thread = threading.Thread(target=lambda: console.console_using(messages_dict, gui_interface))
@@ -11,6 +12,7 @@ def main():
 
     console_thread.join()
     print("End program")
+
 
 if __name__ == '__main__':
     messages_dict = {}
