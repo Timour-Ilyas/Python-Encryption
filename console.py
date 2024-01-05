@@ -2,7 +2,7 @@ from encoder import Encoder
 from decoder import Decoder
 
 
-def console_using(messages_dict, gui_interface_to_close):
+def console_using(messages_dict):
     option = 0
     secret_message = ""
     original_message = ""

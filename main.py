@@ -5,7 +5,7 @@ import threading
 
 def main():
     gui_interface = TkView()
-    console_thread = threading.Thread(target=lambda: console.console_using(messages_dict, gui_interface))
+    console_thread = threading.Thread(target=lambda: console.console_using(messages_dict))
 
     console_thread.start()
     gui_interface.start_interface()
