@@ -17,7 +17,7 @@ class TkView:
         self.title_label = tk.Label(self.root, textvariable=self.title_text, font=('Arial', 35))
         self.title_label.pack()
 
-        self.first_textbox = tk.Entry(self.root)
+        self.first_textbox = tk.Text(self.root, height=3, width=20)
         self.first_textbox.pack()
 
         self.change_mode_button = tk.Button(self.root, text="Change mode", command=self.change_mode)
@@ -25,7 +25,7 @@ class TkView:
 
         self.text_of_second_box = tk.StringVar()
         self.text_of_second_box.set("")
-        self.second_textbox = tk.Entry(self.root, textvariable=self.text_of_second_box, state="disabled")
+        self.second_textbox = tk.Text(self.root, height=3, width=20, state="disabled")
         self.second_textbox.pack()
 
         self.combobox_mode = ttk.Combobox(self.root, state="readonly")
@@ -70,24 +70,30 @@ class TkView:
 
     def clicked_main_button(self):
         if self.state_on_encryption:
-            message = self.first_textbox.get()
+            message = self.first_textbox.get("1.0", "end-1c")
             key = self.key_textbox.get()
+            secret_message = ""
             if not self.combobox_mode.current():
                 secret_message = self.encoder.caesar(message, key)
-                self.text_of_second_box.set(secret_message)
-            if self.combobox_mode.current() == 1:
+            elif self.combobox_mode.current() == 1:
                 secret_message = self.encoder.vigenere(message, key)
-                self.text_of_second_box.set(secret_message)
-            if self.combobox_mode.current() == 2:
+            elif self.combobox_mode.current() == 2:
                 pass
+            self.second_textbox.configure(state="normal")
+            self.second_textbox.delete(1.0, "end")
+            self.second_textbox.insert("end", secret_message)
+            self.second_textbox.configure(state="disabled")
         else:
-            secret_message = self.first_textbox.get()
+            secret_message = self.first_textbox.get("1.0", "end-1c")
             key = self.key_textbox.get()
+            message = ""
             if not self.combobox_mode.current():
                 message = self.decoder.caesar(secret_message, key)
-                self.text_of_second_box.set(message)
-            if self.combobox_mode.current() == 1:
+            elif self.combobox_mode.current() == 1:
                 message = self.decoder.vigenere(secret_message, key)
-                self.text_of_second_box.set(message)
-            if self.combobox_mode.current() == 2:
+            elif self.combobox_mode.current() == 2:
                 pass
+            self.second_textbox.configure(state="normal")
+            self.second_textbox.delete(1.0, "end")
+            self.second_textbox.insert("end", message)
+            self.second_textbox.configure(state="disabled")
