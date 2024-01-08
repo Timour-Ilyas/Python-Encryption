@@ -18,6 +18,7 @@ class TkView:
         self.title_label.pack()
 
         self.first_textbox = tk.Text(self.root, height=3, width=20)
+        self.first_textbox.bind("<KeyPress>", self.textbox_shortcut)
         self.first_textbox.pack()
 
         self.change_mode_button = tk.Button(self.root, text="Change mode", command=self.change_mode)
@@ -69,31 +70,30 @@ class TkView:
             self.state_on_encryption = not self.state_on_encryption
 
     def clicked_main_button(self):
+        final_message = ""
         if self.state_on_encryption:
             message = self.first_textbox.get("1.0", "end-1c")
             key = self.key_textbox.get()
-            secret_message = ""
             if not self.combobox_mode.current():
-                secret_message = self.encoder.caesar(message, key)
+                final_message = self.encoder.caesar(message, key)
             elif self.combobox_mode.current() == 1:
-                secret_message = self.encoder.vigenere(message, key)
+                final_message = self.encoder.vigenere(message, key)
             elif self.combobox_mode.current() == 2:
                 pass
-            self.second_textbox.configure(state="normal")
-            self.second_textbox.delete(1.0, "end")
-            self.second_textbox.insert("end", secret_message)
-            self.second_textbox.configure(state="disabled")
         else:
             secret_message = self.first_textbox.get("1.0", "end-1c")
             key = self.key_textbox.get()
-            message = ""
             if not self.combobox_mode.current():
-                message = self.decoder.caesar(secret_message, key)
+                final_message = self.decoder.caesar(secret_message, key)
             elif self.combobox_mode.current() == 1:
-                message = self.decoder.vigenere(secret_message, key)
+                final_message = self.decoder.vigenere(secret_message, key)
             elif self.combobox_mode.current() == 2:
                 pass
-            self.second_textbox.configure(state="normal")
-            self.second_textbox.delete(1.0, "end")
-            self.second_textbox.insert("end", message)
-            self.second_textbox.configure(state="disabled")
+        self.second_textbox.configure(state="normal")
+        self.second_textbox.delete(1.0, "end")
+        self.second_textbox.insert("end", final_message)
+        self.second_textbox.configure(state="disabled")
+
+    def textbox_shortcut(self, event):
+        if event.state == 4 and event.keysym == "Return":
+            self.clicked_main_button()
