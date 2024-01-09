@@ -3,6 +3,9 @@ import queue
 
 
 class Decoder:
+    def __init__(self):
+        self.__decryption_options = ["caesar", "vigenere", "symmetric"]
+
     def caesar(self, secret_message, key):
         que = queue.Queue()
         if len(secret_message) < 10:  # 1 thread
@@ -96,3 +99,8 @@ class Decoder:
 
         que.put(message)
         return message
+
+    def get_decryption_options(self, option=None):
+        if option is not None:
+            return self.__decryption_options[option]
+        return self.__decryption_options

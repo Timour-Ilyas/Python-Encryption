@@ -3,6 +3,9 @@ import queue
 
 
 class Encoder:
+    def __init__(self):
+        self.__encryption_options = ["caesar", "vigenere", "symmetric"]
+
     def caesar(self, message, key):
         que = queue.Queue()
         if len(message) < 10:  # 1 thread
@@ -96,3 +99,8 @@ class Encoder:
 
         que.put(secret_message)
         return secret_message
+
+    def get_encryption_options(self, option=None):
+        if option is not None:
+            return self.__encryption_options[option]
+        return self.__encryption_options

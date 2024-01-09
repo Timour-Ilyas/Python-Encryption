@@ -1,10 +1,10 @@
-from gui import TkView
+from gui import CtkView
 import console
 import threading
 
 
 def main():
-    gui_interface = TkView()
+    gui_interface = CtkView()
     console_thread = threading.Thread(target=lambda: console.console_using(messages_dict))
 
     console_thread.start()
