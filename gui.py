@@ -20,6 +20,22 @@ class CtkView:
         self.root.geometry("1280x720")
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
 
+        menubar = tk.Menu(self.root)
+        self.root.config(menu=menubar)
+        file_menu = tk.Menu(menubar, tearoff=False)
+        file_menu.add_command(
+            label='Add CSV file',
+            command=self.add_csv_file
+        )
+        file_menu.add_command(
+            label='Add JSN file',
+            command=self.add_jsn_file
+        )
+        menubar.add_cascade(
+            label="File",
+            menu=file_menu
+        )
+
         self.frame = ctk.CTkFrame(self.root)
         self.frame.pack(padx=40, pady=20, fill="both", expand=True)
 
@@ -105,3 +121,9 @@ class CtkView:
     def textbox_shortcut(self, event):
         if event.state == 4 and event.keysym == "Return":
             self.clicked_main_button()
+
+    def add_csv_file(self):
+        pass
+
+    def add_jsn_file(self):
+        pass
