@@ -6,9 +6,10 @@ from decoder import Decoder
 
 
 class CtkView:
-    def __init__(self):
+    def __init__(self, messages_dict):
         self.encoder = Encoder()
         self.decoder = Decoder()
+        self.messages_dict = messages_dict
         self.state_on_encryption = False
 
         # setup CTkinter
@@ -94,29 +95,30 @@ class CtkView:
             self.state_on_encryption = not self.state_on_encryption
 
     def clicked_main_button(self):
+        first_message = self.first_textbox.get("1.0", "end-1c")
         final_message = ""
+        key = self.key_entry.get()
+
         if self.state_on_encryption:
-            message = self.first_textbox.get("1.0", "end-1c")
-            key = self.key_entry.get()
             if self.combobox_mode.get() == self.encoder.get_encryption_options(0):
-                final_message = self.encoder.caesar(message, key)
+                final_message = self.encoder.caesar(first_message, key)
             elif self.combobox_mode.get() == self.encoder.get_encryption_options(1):
-                final_message = self.encoder.vigenere(message, key)
+                final_message = self.encoder.vigenere(first_message, key)
             else:
                 pass
         else:
-            secret_message = self.first_textbox.get("1.0", "end-1c")
-            key = self.key_entry.get()
-            if self.combobox_mode.get() == self.encoder.get_encryption_options(0):
-                final_message = self.decoder.caesar(secret_message, key)
-            elif self.combobox_mode.get() == self.encoder.get_encryption_options(1):
-                final_message = self.decoder.vigenere(secret_message, key)
+            if self.combobox_mode.get() == self.decoder.get_decryption_options(0):
+                final_message = self.decoder.caesar(first_message, key)
+            elif self.combobox_mode.get() == self.decoder.get_decryption_options(1):
+                final_message = self.decoder.vigenere(first_message, key)
             else:
                 pass
         self.second_textbox.configure(state="normal")
         self.second_textbox.delete(1.0, "end")
         self.second_textbox.insert("end", final_message)
         self.second_textbox.configure(state="disabled")
+
+        self.messages_dict[first_message] = final_message
 
     def textbox_shortcut(self, event):
         if event.state == 4 and event.keysym == "Return":

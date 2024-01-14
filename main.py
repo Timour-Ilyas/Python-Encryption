@@ -4,7 +4,7 @@ import threading
 
 
 def main():
-    gui_interface = CtkView()
+    gui_interface = CtkView(messages_dict)
     console_thread = threading.Thread(target=lambda: console.console_using(messages_dict))
 
     console_thread.start()
