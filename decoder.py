@@ -5,8 +5,15 @@ import queue
 class Decoder:
     def __init__(self):
         self.__decryption_options = ["Caesar", "Vigenere", "Symmetric"]
+        self.__decryption_functions = [self.caesar, self.vigenere]
 
-    def caesar(self, secret_message, key):
+    def decipher(self, decryption_chosed: str, message: str, key):
+        for i, option in enumerate(self.__decryption_options):
+            if decryption_chosed == option:
+                return self.__decryption_functions[i](message, key)
+                # Understand why there is a warning here: Unexpected argument(s)
+
+    def caesar(self, secret_message: str, key):
         que = queue.Queue()
         if len(secret_message) < 10:  # 1 thread
             return self.__caesar_decrypter(secret_message, key, que)
@@ -52,7 +59,7 @@ class Decoder:
         que.put(message)
         return message
 
-    def vigenere(self, secret_message, key):
+    def vigenere(self, secret_message: str, key):
         que = queue.Queue()
         if len(secret_message) < 10:  # 1 thread
             return self.__vigenere_decrypter(secret_message, key, que)
@@ -100,7 +107,7 @@ class Decoder:
         que.put(message)
         return message
 
-    def get_decryption_options(self, option=None):
+    def get_decryption_options(self, option: int = None):
         if option is not None:
             return self.__decryption_options[option]
         return self.__decryption_options

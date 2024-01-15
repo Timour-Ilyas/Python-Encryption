@@ -2,7 +2,7 @@ from encoder import Encoder
 from decoder import Decoder
 
 
-def console_using(messages_dict):
+def console_using(messages: dict):
     option = 0
     secret_message = ""
     original_message = ""
@@ -38,4 +38,4 @@ def console_using(messages_dict):
     print(f"{secret_message}")
     print(f"{original_message}")
 
-    messages_dict[secret_message] = original_message
+    messages[secret_message] = original_message

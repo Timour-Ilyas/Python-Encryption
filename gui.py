@@ -23,27 +23,17 @@ class CtkView:
 
         self.menubar = tk.Menu(self.root)
         self.root.config(menu=self.menubar)
-        self.file_menu = tk.Menu(self.menubar, tearoff=False)
-        self.file_menu.add_command(
-            label='Import CSV file',
-            command=self.import_csv_file
-        )
-        self.file_menu.add_command(
-            label='Import JSN file',
-            command=self.import_jsn_file
-        )
-        self.file_menu.add_command(
-            label='Import TXT file',
-            command=self.import_txt_file
-        )
-        self.file_menu.add_command(
-            label='Import PDF file',
-            command=self.import_pdf_file
-        )
-        self.menubar.add_cascade(
-            label="File",
-            menu=self.file_menu
-        )
+        self.file_menu = tk.Menu(self.menubar, tearoff=False,
+                                 background='black', foreground='white',
+                                 activebackground='white', activeforeground='black')
+        self.file_menu.add_command(label='Import CSV file', command=self.import_csv_file)
+        self.file_menu.add_command(label='Import JSN file', command=self.import_jsn_file)
+        self.file_menu.add_command(label='Import TXT file', command=self.import_txt_file)
+        self.file_menu.add_command(label='Import PDF file', command=self.import_pdf_file)
+        self.file_menu.add_separator()
+        self.file_menu.add_command(label='Save', command=self.save)
+        self.file_menu.add_command(label='Save as', command=self.save_as)
+        self.menubar.add_cascade(label="File", menu=self.file_menu)
 
         # create the gui
         self.frame = ctk.CTkFrame(self.root)
@@ -71,6 +61,10 @@ class CtkView:
         self.text_of_second_box.set("")
         self.second_textbox = CTkTextbox(self.text_box_frame, height=100, width=400, state="disabled", padx=5, pady=5)
         self.second_textbox.grid(column=2, row=0, pady=20)
+
+        self.clean_second_textbox_button = CTkButton(self.text_box_frame, text="Clean", height=20, width=30,
+                                                     command=self.clean_second_textbox)
+        self.clean_second_textbox_button.grid(column=3, row=0)
 
         self.combobox_mode = CTkComboBox(self.frame, state="readonly", font=("Arial", 20), width=170, height=40)
         self.combobox_mode.configure(values=self.encoder.get_encryption_options())
@@ -142,6 +136,11 @@ class CtkView:
         if event.state == 4 and event.keysym == "Return":
             self.clicked_main_button()
 
+    def clean_second_textbox(self):
+        self.second_textbox.configure(state="normal")
+        self.second_textbox.delete(1.0, "end")
+        self.second_textbox.configure(state="disabled")
+
     def import_csv_file(self):
         pass
 
@@ -152,4 +151,10 @@ class CtkView:
         pass
 
     def import_pdf_file(self):
+        pass
+
+    def save(self):
+        pass
+
+    def save_as(self):
         pass

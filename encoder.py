@@ -5,8 +5,15 @@ import queue
 class Encoder:
     def __init__(self):
         self.__encryption_options = ["Caesar", "Vigenere", "Symmetric"]
+        self.__encryption_functions = [self.caesar, self.vigenere]
 
-    def caesar(self, message, key):
+    def cipher(self, encryption_chosed: str, message: str, key):
+        for i, option in enumerate(self.__encryption_options):
+            if encryption_chosed == option:
+                return self.__encryption_functions[i](message, key)
+                # Understand why there is a warning here: Unexpected argument(s)
+
+    def caesar(self, message: str, key):
         que = queue.Queue()
         if len(message) < 10:  # 1 thread
             return self.__caesar_crypter(message, key, que)
@@ -52,7 +59,7 @@ class Encoder:
         que.put(secret_message)
         return secret_message
 
-    def vigenere(self, message, key):
+    def vigenere(self, message: str, key):
         que = queue.Queue()
         if len(message) < 10:  # 1 thread
             return self.__vigenere_crypter(message, key, que)
@@ -100,7 +107,7 @@ class Encoder:
         que.put(secret_message)
         return secret_message
 
-    def get_encryption_options(self, option=None):
+    def get_encryption_options(self, option: int = None):
         if option is not None:
             return self.__encryption_options[option]
         return self.__encryption_options
