@@ -4,8 +4,6 @@ from decoder import Decoder
 
 def console_using(messages: dict):
     option = 0
-    secret_message = ""
-    original_message = ""
     encoder = Encoder()
     decoder = Decoder()
 
@@ -26,14 +24,8 @@ def console_using(messages: dict):
     message = input("Write the message: ")
     key = input("Enter the key: ")
 
-    if option == 1:
-        secret_message = encoder.caesar(message, key)
-        original_message = decoder.caesar(secret_message, key)
-    elif option == 2:
-        secret_message = encoder.vigenere(message, key)
-        original_message = decoder.vigenere(secret_message, key)
-    elif option == 3:
-        print("Symmetric cipher")
+    secret_message = encoder.cipher(encoder.get_encryption_options(option-1), message, key)
+    original_message = decoder.decipher(decoder.get_decryption_options(option-1), secret_message, key)
 
     print(f"{secret_message}")
     print(f"{original_message}")

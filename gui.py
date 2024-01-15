@@ -6,10 +6,10 @@ from decoder import Decoder
 
 
 class CtkView:
-    def __init__(self, messages_dict):
+    def __init__(self, messages: dict):
         self.encoder = Encoder()
         self.decoder = Decoder()
-        self.messages_dict = messages_dict
+        self.messages = messages
         self.state_on_encryption = False
 
         # setup CTkinter
@@ -108,29 +108,19 @@ class CtkView:
 
     def clicked_main_button(self):
         first_message = self.first_textbox.get("1.0", "end-1c")
-        final_message = ""
         key = self.key_entry.get()
 
         if self.state_on_encryption:
-            if self.combobox_mode.get() == self.encoder.get_encryption_options(0):
-                final_message = self.encoder.caesar(first_message, key)
-            elif self.combobox_mode.get() == self.encoder.get_encryption_options(1):
-                final_message = self.encoder.vigenere(first_message, key)
-            else:
-                pass
+            final_message = self.encoder.cipher(self.combobox_mode.get(), first_message, key)
         else:
-            if self.combobox_mode.get() == self.decoder.get_decryption_options(0):
-                final_message = self.decoder.caesar(first_message, key)
-            elif self.combobox_mode.get() == self.decoder.get_decryption_options(1):
-                final_message = self.decoder.vigenere(first_message, key)
-            else:
-                pass
+            final_message = self.decoder.decipher(self.combobox_mode.get(), first_message, key)
+
         self.second_textbox.configure(state="normal")
         self.second_textbox.delete(1.0, "end")
         self.second_textbox.insert("end", final_message)
         self.second_textbox.configure(state="disabled")
 
-        self.messages_dict[first_message] = final_message
+        self.messages[first_message] = final_message
 
     def __textbox_shortcut(self, event):
         if event.state == 4 and event.keysym == "Return":
