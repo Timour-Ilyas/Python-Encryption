@@ -21,55 +21,73 @@ class CtkView:
         self.root.geometry("1280x720")
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-        menubar = tk.Menu(self.root)
-        self.root.config(menu=menubar)
-        file_menu = tk.Menu(menubar, tearoff=False)
-        file_menu.add_command(
-            label='Add CSV file',
-            command=self.add_csv_file
+        self.menubar = tk.Menu(self.root)
+        self.root.config(menu=self.menubar)
+        self.file_menu = tk.Menu(self.menubar, tearoff=False)
+        self.file_menu.add_command(
+            label='Import CSV file',
+            command=self.import_csv_file
         )
-        file_menu.add_command(
-            label='Add JSN file',
-            command=self.add_jsn_file
+        self.file_menu.add_command(
+            label='Import JSN file',
+            command=self.import_jsn_file
         )
-        menubar.add_cascade(
+        self.file_menu.add_command(
+            label='Import TXT file',
+            command=self.import_txt_file
+        )
+        self.file_menu.add_command(
+            label='Import PDF file',
+            command=self.import_pdf_file
+        )
+        self.menubar.add_cascade(
             label="File",
-            menu=file_menu
+            menu=self.file_menu
         )
 
+        # create the gui
         self.frame = ctk.CTkFrame(self.root)
         self.frame.pack(padx=40, pady=20, fill="both", expand=True)
 
-        # create the gui
         self.title_text = tk.StringVar()
-        self.title_label = CTkLabel(self.frame, textvariable=self.title_text, font=('Arial', 35), padx=60, pady=20)
+        self.title_label = CTkLabel(self.frame, textvariable=self.title_text, font=('Arial', 60), padx=60, pady=20)
         self.title_label.pack()
 
-        self.first_textbox = CTkTextbox(self.frame, height=100, width=400, padx=5, pady=5)
-        self.first_textbox.bind("<KeyPress>", self.textbox_shortcut)
-        self.first_textbox.pack(pady=20)
+        self.text_box_frame = ctk.CTkFrame(self.frame)
+        self.text_box_frame.columnconfigure(0, weight=3)
+        self.text_box_frame.columnconfigure(1, weight=2)
+        self.text_box_frame.columnconfigure(3, weight=3)
+        self.text_box_frame.pack(padx=40, pady=20, fill="both")
 
-        self.change_mode_button = CTkButton(self.frame, text="Change mode", command=self.change_mode)
-        self.change_mode_button.pack(pady=20)
+        self.first_textbox = CTkTextbox(self.text_box_frame, height=100, width=400, padx=5, pady=5)
+        self.first_textbox.bind("<KeyPress>", self.__textbox_shortcut)
+        self.first_textbox.grid(column=0, row=0, pady=20)
+
+        self.change_mode_button = CTkButton(self.text_box_frame, text="Change mode", command=self.change_mode,
+                                            width=110, height=40)
+        self.change_mode_button.grid(column=1, row=0, pady=20)
 
         self.text_of_second_box = tk.StringVar()
         self.text_of_second_box.set("")
-        self.second_textbox = CTkTextbox(self.frame, height=100, width=400, state="disabled", padx=5, pady=5)
-        self.second_textbox.pack(pady=20)
+        self.second_textbox = CTkTextbox(self.text_box_frame, height=100, width=400, state="disabled", padx=5, pady=5)
+        self.second_textbox.grid(column=2, row=0, pady=20)
 
-        self.combobox_mode = CTkComboBox(self.frame, state="readonly")
+        self.combobox_mode = CTkComboBox(self.frame, state="readonly", font=("Arial", 20), width=170, height=40)
         self.combobox_mode.configure(values=self.encoder.get_encryption_options())
         self.combobox_mode.set(self.encoder.get_encryption_options(0))
         self.combobox_mode.pack(pady=20)
 
-        self.title_label = CTkLabel(self.frame, text="Key", font=('Arial', 15))
-        self.title_label.pack()
-        self.key_entry = CTkEntry(self.frame)
-        self.key_entry.pack(pady=20)
+        self.key_frame = ctk.CTkFrame(self.frame)
+        self.key_frame.pack(padx=40, pady=20, ipady=10)
+        self.key_label = CTkLabel(self.key_frame, text="Key", font=('Arial', 20), padx=10, pady=10)
+        self.key_label.pack()
+        self.key_entry = CTkEntry(self.key_frame, font=('Arial', 20), width=170, height=40)
+        self.key_entry.pack(padx=20)
 
         self.btn_text = tk.StringVar()
-        self.translation_button = CTkButton(self.frame, textvariable=self.btn_text, command=self.clicked_main_button)
-        self.translation_button.pack()
+        self.translation_button = CTkButton(self.frame, textvariable=self.btn_text, command=self.clicked_main_button,
+                                            width=200, height=50, font=('Arial', 25))
+        self.translation_button.pack(padx=20, pady=20)
 
         self.change_mode()
 
@@ -120,12 +138,18 @@ class CtkView:
 
         self.messages_dict[first_message] = final_message
 
-    def textbox_shortcut(self, event):
+    def __textbox_shortcut(self, event):
         if event.state == 4 and event.keysym == "Return":
             self.clicked_main_button()
 
-    def add_csv_file(self):
+    def import_csv_file(self):
         pass
 
-    def add_jsn_file(self):
+    def import_jsn_file(self):
+        pass
+
+    def import_txt_file(self):
+        pass
+
+    def import_pdf_file(self):
         pass

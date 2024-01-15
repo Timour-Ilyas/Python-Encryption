@@ -4,7 +4,7 @@ import queue
 
 class Decoder:
     def __init__(self):
-        self.__decryption_options = ["caesar", "vigenere", "symmetric"]
+        self.__decryption_options = ["Caesar", "Vigenere", "Symmetric"]
 
     def caesar(self, secret_message, key):
         que = queue.Queue()

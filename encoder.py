@@ -4,7 +4,7 @@ import queue
 
 class Encoder:
     def __init__(self):
-        self.__encryption_options = ["caesar", "vigenere", "symmetric"]
+        self.__encryption_options = ["Caesar", "Vigenere", "Symmetric"]
 
     def caesar(self, message, key):
         que = queue.Queue()
