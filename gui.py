@@ -3,6 +3,7 @@ from customtkinter import CTkLabel, CTkTextbox, CTkButton, CTkEntry, CTkComboBox
 import tkinter as tk
 from encoder import Encoder
 from decoder import Decoder
+import pyperclip
 
 
 class CtkView:
@@ -62,9 +63,14 @@ class CtkView:
         self.second_textbox = CTkTextbox(self.text_box_frame, height=100, width=400, state="disabled", padx=5, pady=5)
         self.second_textbox.grid(column=2, row=0, pady=20)
 
-        self.clean_second_textbox_button = CTkButton(self.text_box_frame, text="Clean", height=20, width=30,
+        self.lateral_buttons_frame = ctk.CTkFrame(self.text_box_frame)
+        self.lateral_buttons_frame.grid(column=3, row=0)
+        self.copy_second_textbox_button = CTkButton(self.lateral_buttons_frame, text="Copy", height=20, width=30,
+                                                    command=self.copy_second_textbox)
+        self.copy_second_textbox_button.grid(column=0, row=0, padx=5, pady=5)
+        self.clean_second_textbox_button = CTkButton(self.lateral_buttons_frame, text="Clean", height=20, width=30,
                                                      command=self.clean_second_textbox)
-        self.clean_second_textbox_button.grid(column=3, row=0)
+        self.clean_second_textbox_button.grid(column=0, row=1, padx=5, pady=5)
 
         self.combobox_mode = CTkComboBox(self.frame, state="readonly", font=("Arial", 20), width=170, height=40)
         self.combobox_mode.configure(values=self.encoder.get_encryption_options())
@@ -125,6 +131,9 @@ class CtkView:
     def __textbox_shortcut(self, event):
         if event.state == 4 and event.keysym == "Return":
             self.clicked_main_button()
+
+    def copy_second_textbox(self):
+        pyperclip.copy(self.second_textbox.get("1.0", "end-1c"))
 
     def clean_second_textbox(self):
         self.second_textbox.configure(state="normal")
