@@ -4,6 +4,8 @@ import tkinter as tk
 from encoder import Encoder
 from decoder import Decoder
 import pyperclip
+from tkinter.filedialog import askopenfilename
+import csv
 
 
 class CtkView:
@@ -141,7 +143,10 @@ class CtkView:
         self.second_textbox.configure(state="disabled")
 
     def import_csv_file(self):
-        pass
+        csv_file_path = askopenfilename()
+        with open(csv_file_path, 'r') as file:
+            for row in csv.reader(file):
+                self.messages[row[0]] = ""
 
     def import_jsn_file(self):
         pass
