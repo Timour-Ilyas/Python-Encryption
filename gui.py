@@ -147,12 +147,17 @@ class CtkView:
         with open(csv_file_path, 'r') as file:
             for row in csv.reader(file):
                 self.messages[row[0]] = ""
+            file.close()
 
     def import_jsn_file(self):
         pass
 
     def import_txt_file(self):
-        pass
+        txt_file_path = askopenfilename()
+        with open(txt_file_path, 'r') as file:
+            text = file.read()
+            self.messages[text] = ""
+            file.close()
 
     def import_pdf_file(self):
         pass
