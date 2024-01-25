@@ -6,6 +6,7 @@ from decoder import Decoder
 import pyperclip
 from tkinter.filedialog import askopenfilename
 import csv
+import json
 
 
 class CtkView:
@@ -30,7 +31,7 @@ class CtkView:
                                  background='black', foreground='white',
                                  activebackground='white', activeforeground='black')
         self.file_menu.add_command(label='Import CSV file', command=self.import_csv_file)
-        self.file_menu.add_command(label='Import JSN file', command=self.import_jsn_file)
+        self.file_menu.add_command(label='Import JSN file', command=self.import_json_file)
         self.file_menu.add_command(label='Import TXT file', command=self.import_txt_file)
         self.file_menu.add_command(label='Import PDF file', command=self.import_pdf_file)
         self.file_menu.add_separator()
@@ -149,8 +150,11 @@ class CtkView:
                 self.messages[row[0]] = ""
             file.close()
 
-    def import_jsn_file(self):
-        pass
+    def import_json_file(self):
+        jsn_file_path = askopenfilename()
+        with open(jsn_file_path, 'r') as file:
+            self.messages.update(json.load(file))
+        print(self.messages)
 
     def import_txt_file(self):
         txt_file_path = askopenfilename()
