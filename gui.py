@@ -7,6 +7,7 @@ import pyperclip
 from tkinter.filedialog import askopenfilename
 import csv
 import json
+from PyPDF2 import PdfReader
 
 
 class CtkView:
@@ -154,7 +155,7 @@ class CtkView:
         jsn_file_path = askopenfilename()
         with open(jsn_file_path, 'r') as file:
             self.messages.update(json.load(file))
-        print(self.messages)
+            file.close()
 
     def import_txt_file(self):
         txt_file_path = askopenfilename()
@@ -164,7 +165,12 @@ class CtkView:
             file.close()
 
     def import_pdf_file(self):
-        pass
+        pdf_file_path = askopenfilename()
+        file = PdfReader(pdf_file_path)
+        text = ""
+        for page in file.pages:
+            text += page.extract_text()
+        self.messages[text] = ""
 
     def save(self):
         pass
